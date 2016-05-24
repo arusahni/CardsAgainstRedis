@@ -31,6 +31,9 @@ class CarGame:
         self._conn = conn
         self.user = user
 
+    def __get(self, key):
+        return self._conn.get(key).decode('utf-8')
+
     def get_hand(self):
         if len(self.hand) < HAND_SIZE:
             self._draw_up()
@@ -38,8 +41,7 @@ class CarGame:
 
     def _draw_up(self):
         for card_text in white_cards:
-            card_user = self._conn.get("white:{}".format(card_text))
-            card_user = card_user.decode('utf-8')
+            card_user = self.__get("white:{}".format(card_text))
             if card_user == self.user:
                 print("Taking: {}".format(card_text))
                 self.hand.append(card_text)
@@ -50,11 +52,17 @@ class CarGame:
         if len(self.hand) < HAND_SIZE:
             print("!! Deck is empty.")
 
+    def get_black_card(self):
+        card = self.__get("current_black_card").split(":", 1)[1]
+        return card
+
 def play_game():
     conn = get_connection()
     user = input("User name: ")
     game = CarGame(conn, user)
     game.get_hand()
+    black = game.get_black_card()
+    print("Black card: {}".format(black))
     print("Bye, {}".format(game.user))
 
 if __name__ == "__main__":
