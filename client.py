@@ -46,7 +46,8 @@ class CarGame:
                 print("Taking: {}".format(card_text))
                 self.hand.append(card_text)
             else:
-                print("Not taking: {}".format(card_text))
+                # print("Not taking: {}".format(card_text))
+                pass
             if len(self.hand) >= HAND_SIZE:
                 break
         if len(self.hand) < HAND_SIZE:
